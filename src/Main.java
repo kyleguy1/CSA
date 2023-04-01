@@ -5,22 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
-import static java.awt.SystemColor.text;
-
-
 public class Main {
     public static JTextArea messageTextWalter;
     public static JTextArea messageTextMe;
-    public static JTextArea nameBox;
+    public static JTextArea nameBox = new JTextArea();
     public static JPanel[] background;
     public static JButton b1;
     public static JFrame game;
 
-
     public static void createAndShowGUI(int bgNumber, String dialogueWalter, String dialogueMe, String image, JFrame game){
         // Text Box Area for Walter
         messageTextWalter = new JTextArea(dialogueWalter);
-        messageTextWalter.setBounds(50, 425, 700, 150);
+        messageTextWalter.setBounds(50, 435, 700, 140);
         messageTextWalter.setMargin(new Insets(10,10,10,10));
         messageTextWalter.setBackground(Color.BLACK);
         messageTextWalter.setForeground(Color.CYAN);
@@ -33,7 +29,7 @@ public class Main {
 
         //Text Box Area for Main Character
         messageTextMe = new JTextArea(dialogueMe);
-        messageTextMe.setBounds(50, 425, 700, 150);
+        messageTextMe.setBounds(50, 435, 700, 140);
         messageTextMe.setMargin(new Insets(10,10,10,10));
         messageTextMe.setBackground(Color.BLACK);
         messageTextMe.setForeground(Color.PINK);
@@ -45,17 +41,17 @@ public class Main {
         game.add(messageTextMe);
 
         //Text Box Area for Name Plate
-        nameBox = new JTextArea();
-        nameBox.setText("");
         nameBox.setForeground(Color.ORANGE);
         nameBox.setBackground(Color.BLACK);
+        //ameBox.setAlignmentY(Component.CENTER_ALIGNMENT);
+        //nameBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         //nameBox.setBorder(BorderFactory.createLineBorder(Color.WHITE,2,true));
-        //nameBox.setMargin(new Insets(5,5,5,5));
-        //nameBox.setLineWrap(true);
+        nameBox.setMargin(new Insets(5,5,5,5));
+        nameBox.setLineWrap(true);
         nameBox.setLayout(null);
         nameBox.setEditable(false);
-        nameBox.setFont(new Font("Book Antiqua", Font.BOLD, 25));
-        nameBox.setBounds(60,400,100,20);
+        nameBox.setFont(new Font("Book Antiqua", Font.BOLD, 34));
+        nameBox.setBounds(60,390,500,40);
         game.add(nameBox);
 
         // Text Box Border
@@ -67,17 +63,17 @@ public class Main {
         messageTextMe.setBorder(border1);
 
         // Background Area
-        background = new JPanel[20];
+        background = new JPanel[50];
         background[1] = new JPanel();
-        background[1].setBounds(50, 50, 700, 350);
+        background[1].setBounds(50, 50, 700, 340);
         background[1].setLayout(null);
 
         // Background Images
         JLabel[] bg = new JLabel[10];
         ImageIcon bgImage1 = new ImageIcon(image);
-        bg[1] = new JLabel(resizeImageIcon(bgImage1, 700, 350));
-        bg[1].setBounds(0, 0, 700, 350);
-        bg[1].setIcon(resizeImageIcon(bgImage1, 700, 350));
+        bg[1] = new JLabel(resizeImageIcon(bgImage1, 700, 340));
+        bg[1].setBounds(0, 0, 700, 340);
+        bg[1].setIcon(resizeImageIcon(bgImage1, 700, 340));
         bg[1].setBorder(BorderFactory.createLineBorder(Color.WHITE,2, true));
         background[1].add(bg[1]);
         game.add(background[1]);
@@ -90,43 +86,50 @@ public class Main {
         /*b1.setOpaque(false);
         b1.setContentAreaFilled(false);
         b1.setBorderPainted(false);*/
-        b1.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                if (bgNumber == 2) {
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                    } catch (InterruptedException d) {
-                        throw new RuntimeException(d);
-                    }
-                } else
-                if (bgNumber == 7)
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(500);
-                    } catch (InterruptedException d) {
-                        throw new RuntimeException(d);
-                    }
-                game.remove(messageTextWalter);
-                game.remove(messageTextMe);
-                bg[1].setVisible(false);
-                // bg[1].setIcon(null);
-                // bg[1].revalidate();
-                // bg[1].repaint();
-                // background[1].remove(bg[1]);
-                // background[1].revalidate();
-                // background[1].repaint();
-                // game.remove(background[1]);
-                game.remove(b1);
-                scenes(bgNumber+1, game);
-                bg[1].setVisible(true);
+        b1.addActionListener(e -> {
+
+            if (bgNumber == 2) {
+                nameBox.setText(NameGenerator.characterName);
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException d) {
+                    throw new RuntimeException(d);
+                }
+            } else
+                try {
+                    TimeUnit.MILLISECONDS.sleep(500);
+                } catch (InterruptedException d) {
+                    throw new RuntimeException(d);
+                }
+            if (dialogueWalter == null) {
+                nameBox.setText(NameGenerator.characterName);
+            } else if (dialogueMe == null){
+                nameBox.setText("Walter White");
+            } else {
+                nameBox.setText("");
             }
+
+
+            game.remove(messageTextWalter);
+            game.remove(messageTextMe);
+            bg[1].setVisible(false);
+            // bg[1].setIcon(null);
+            // bg[1].revalidate();
+            // bg[1].repaint();
+            // background[1].remove(bg[1]);
+            // background[1].revalidate();
+            // background[1].repaint();
+            // game.remove(background[1]);
+            game.remove(b1);
+            scenes(bgNumber+1, game);
+            bg[1].setVisible(true);
         });
         game.add(b1);
         game.setVisible(true);
     }
 
     public static void main(String[] args) {
-        NameGenerator generator = new NameGenerator();
+        new NameGenerator();
 
         // Game Area
         game = new JFrame("Making M-th Game");
@@ -190,6 +193,29 @@ public class Main {
         }
         if (bgNumber == 18){
             createAndShowGUI(bgNumber, "Ok I guess",null, "IMGS/WalterWhiteInRV.png", game);
+        }
+        if (bgNumber == 19){
+            createAndShowGUI(bgNumber, null,"To make the math, YOU have to help me solve math problems to " +
+                    "develop a serum.", "IMGS/WalterWhiteInRV.png", game);
+        }
+        if (bgNumber == 20) {
+            createAndShowGUI(bgNumber, null, "We need to make this serum to help people around the world" +
+                    " solve math problems!","IMGS/WalterWhiteInRV.png",game);
+        }
+        if (bgNumber == 21) {
+            createAndShowGUI(bgNumber, null, "Got it???","IMGS/WalterWhiteInRV.png",game);
+        }
+        if (bgNumber == 22) {
+            createAndShowGUI(bgNumber, "Yeah I guess", null,"IMGS/WalterWhiteInRV.png",game);
+        }
+        if (bgNumber == 23) {
+            createAndShowGUI(bgNumber, "I hope that we can save everyone from the lack of math epidemic.....", null,"IMGS/WalterWhiteInRV.png",game);
+        }
+        if (bgNumber == 24) {
+            createAndShowGUI(bgNumber, null, "Let's get started.","IMGS/WalterWhiteInRV.png",game);
+        }
+        if (bgNumber == 25) {
+            createAndShowGUI(bgNumber, null, "Aha! Here's my secret MATH formula!","IMGS/WalterWhiteInRV.png",game);
         }
     }
     public static javax.swing.ImageIcon resizeImageIcon(javax.swing.ImageIcon icon, int resizedWidth, int resizedHeight) {

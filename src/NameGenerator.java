@@ -1,9 +1,7 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.TimeUnit;
 
 
 public class NameGenerator extends Main implements ActionListener {
@@ -12,6 +10,7 @@ public class NameGenerator extends Main implements ActionListener {
     static JLabel label;
     static JButton button;
     static JTextArea nameGenerator;
+    public static String characterName;
 
     NameGenerator() {
         //General Panel
@@ -43,7 +42,7 @@ public class NameGenerator extends Main implements ActionListener {
 
 
         // Name Screen
-        nameGenerator = new JTextArea();
+        nameGenerator = new JTextArea("");
         nameGenerator.setFont(new Font("Arial", Font.BOLD, 25));
         nameGenerator.setEditable(true);
         nameGenerator.setBounds(100, 300, 400, 50);
@@ -51,16 +50,12 @@ public class NameGenerator extends Main implements ActionListener {
         label.add(nameGenerator);
 
         frame.setVisible(true);
-
-
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button) {
-            //ERROR HERE
-            nameBox.setText(nameGenerator.getText());
+            characterName = nameGenerator.getText();
             createAndShowGUI(1,null,"Welcome to M-th Making Visual Novel!                           " +
                     " Press Start to Begin!","IMGS/title_screen.png", game);
         }
