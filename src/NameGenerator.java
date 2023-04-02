@@ -10,7 +10,7 @@ public class NameGenerator extends Main implements ActionListener {
     static JLabel label;
     static JButton button;
     static JTextArea nameGenerator;
-    public static String characterName;
+    private static String characterName;
 
     NameGenerator() {
         //General Panel
@@ -51,11 +51,15 @@ public class NameGenerator extends Main implements ActionListener {
 
         frame.setVisible(true);
     }
+    public static String getCharacterName() {
+        return characterName;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button) {
             characterName = nameGenerator.getText();
+            frame.setVisible(false);
             createAndShowGUI(1,null,"Welcome to M-th Making Visual Novel!                           " +
                     " Press Start to Begin!","IMGS/title_screen.png", game);
         }
